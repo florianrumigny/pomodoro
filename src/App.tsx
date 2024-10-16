@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { Pause, Play, TimerReset } from "lucide-react";
+import { Pause, Play, TimerReset, Coffee } from "lucide-react";
 import { formatTime } from "./utils/formatLogTime";
+import axios from "axios";
+import { QuoteObject } from "./@types/quotesTypes";
 
 function App() {
   const [clock, setClock] = useState<number>(24);
@@ -10,7 +12,18 @@ function App() {
   const [logDuration, setLogDuration] = useState<number>(0);
   const [logBreaks, setLogBreaks] = useState<number>(0);
 
+  const [quotes, setQuotes] = useState<QuoteObject | null>(null);
+
   const fiveMinutes = 5 * 60 * 1000;
+
+  const getZenQuote = async () => {
+    try {
+      const result = await axios.get("https://dummyjson.com/quotes/random");
+      setQuotes(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const { hours: sessionHours, minutes: sessionMinutes } =
     formatTime(logDuration);
@@ -80,6 +93,7 @@ function App() {
       } else if (clock === 25 && !isOnBreak) {
         setIsRunning(false);
         setIsOnBreak(true);
+        getZenQuote();
         if (intervalId) clearInterval(intervalId);
       }
     };
@@ -171,7 +185,9 @@ function App() {
         </div>
       ) : (
         <div>
-          <p>You're on a break, relax.</p>
+          <Coffee size={30} />
+          <p>{quotes?.quote}</p>
+          <p>{quotes?.author}</p>
           <button onClick={handleBreak} className="btn">
             Stop break
           </button>
