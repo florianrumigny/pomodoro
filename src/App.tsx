@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { Pause, Play, TimerReset } from "lucide-react";
+import { formatTime } from "./utils/formatLogTime";
 
 function App() {
   const [clock, setClock] = useState<number>(24);
@@ -10,6 +11,10 @@ function App() {
   const [logBreaks, setLogBreaks] = useState<number>(0);
 
   const fiveMinutes = 5 * 60 * 1000;
+
+  const { hours: sessionHours, minutes: sessionMinutes } =
+    formatTime(logDuration);
+  const { hours: breakHours, minutes: breakMinutes } = formatTime(logBreaks);
 
   const hours = new Date().getHours().toString();
   const minutes = new Date().getMinutes().toString().padStart(2, "0");
@@ -150,9 +155,18 @@ function App() {
           <div className="container-session">
             <h2 className="session-title">Session</h2>
             <p>Duration</p>
-            <p>{logDuration}m</p>
+            <p>
+              {sessionHours > 0
+                ? `${sessionHours}h${sessionMinutes}m`
+                : `${sessionMinutes}m`}
+            </p>
             <p>Breaks</p>
-            <p>{logBreaks}m</p>
+            <p>
+              {" "}
+              {breakHours > 0
+                ? `${breakHours}h${breakMinutes}m`
+                : `${breakMinutes}m`}
+            </p>
           </div>
         </div>
       ) : (
