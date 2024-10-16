@@ -31,7 +31,9 @@
 
 .container-button {
   display: flex;
-  flex-flow: nowrap;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
 }
 
 .btn {
@@ -40,19 +42,15 @@
   font-size: 1rem;
   color: white;
   padding: 1rem 2rem;
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 1rem;
   font-size: 1.2rem;
-}
-
-.button-start {
-  margin-right: 1rem;
   background-color: var(--work-color);
 }
 
-.button-stop {
-  background-color: var(--calm-color);
+/* Bonus features */
+
+.title-calendar {
+  text-transform: capitalize;
 }
