@@ -16,6 +16,7 @@ function App() {
 
   const fiveMinutes = 5 * 60 * 1000;
 
+  // Fetch a quote from dummyjson
   const getZenQuote = async () => {
     try {
       const result = await axios.get("https://dummyjson.com/quotes/random");
@@ -25,6 +26,7 @@ function App() {
     }
   };
 
+  // Handle the logs hurs and minutes (case if up to 60 minutes)
   const { hours: sessionHours, minutes: sessionMinutes } =
     formatTime(logDuration);
   const { hours: breakHours, minutes: breakMinutes } = formatTime(logBreaks);
@@ -37,6 +39,7 @@ function App() {
     weekday: "long",
   }).format(today);
 
+  // Handle the greetings
   const clockDay = `${hours}:${minutes}`;
 
   const sayHello = () => {
@@ -60,25 +63,38 @@ function App() {
     return greetings;
   };
 
+  // Handle all start/break logic
+
+  // Set the start of the timer
   const handleStart = () => {
     setIsRunning(true);
   };
 
+  // Set the break manually
   const handleStop = () => {
     setIsRunning(false);
     setIsOnBreak(true);
   };
 
+  // Set a reset and clock to 0 minutes
   const handleReset = () => {
     setClock(0);
     setIsRunning(false);
   };
 
+  // Ends the break, reset the timer and start a new 25 minutes
   const handleBreak = () => {
     setIsOnBreak(false);
     handleStart();
     handleReset();
   };
+
+  // To prefetch a quote (refetching when a break ends)
+  useEffect(() => {
+    getZenQuote();
+  }, []);
+
+  // To Handle the pomodoro Timer / Break
 
   useEffect(() => {
     let intervalId: number | null = null;
@@ -93,7 +109,6 @@ function App() {
       } else if (clock === 25 && !isOnBreak) {
         setIsRunning(false);
         setIsOnBreak(true);
-        getZenQuote();
         if (intervalId) clearInterval(intervalId);
       }
     };
@@ -104,10 +119,14 @@ function App() {
     };
   }, [clock, isRunning, isOnBreak]);
 
+  // To handle the break and restart function
+
   useEffect(() => {
     let breakTimeoutId: number | null = null;
 
     if (isOnBreak) {
+      getZenQuote();
+
       breakTimeoutId = setTimeout(() => {
         setIsOnBreak(false);
         setIsRunning(true);
