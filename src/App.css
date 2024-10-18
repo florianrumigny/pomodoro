@@ -1,16 +1,23 @@
 .container {
   min-height: 100vh;
-  width: 100vh;
-  margin: 0 auto;
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container-sidebar {
+  width: 20%;
+  border-right: 1px solid #e3e3e3;
+  padding: 1rem;
 }
 
 .container-main {
+  width: 80%;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #d3d3d3;
-  padding: 2rem;
 }
 
 .container-main.is-on {
@@ -25,16 +32,68 @@
   padding-bottom: 2rem;
 }
 
-.title-clock {
-  font-size: 3rem;
-}
-
 .container-button {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 2rem;
 }
+
+/* Main */
+
+.container-timer {
+  border: 20px solid #efefef;
+  border-radius: 100%;
+  padding: 2rem;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.timer-title {
+  font-size: 4rem;
+  margin-bottom: 1.4rem;
+}
+
+/* Sidebar */
+
+.sidebar-top {
+  padding-bottom: 1.4rem;
+}
+
+.sidebar-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.sidebar-day {
+  text-transform: capitalize;
+}
+
+.sidebar-session {
+  border-top: 1px solid #e3e3e3;
+  padding-top: 1.4rem;
+}
+
+.session-block {
+  background-color: #efefef;
+  border-radius: 15px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+.session-title {
+  font-size: 1.4rem;
+  padding-bottom: 0.8rem;
+}
+
+.session-subtitle {
+  font-weight: 600;
+}
+
+/* Generic */
 
 .btn {
   border: none;
@@ -49,8 +108,6 @@
   background-color: var(--work-color);
 }
 
-/* Bonus features */
-
-.title-calendar {
-  text-transform: capitalize;
+.button-stop {
+  background-color: var(--calm-color);
 }

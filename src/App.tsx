@@ -94,7 +94,7 @@ function App() {
     getZenQuote();
   }, []);
 
-  // To Handle the pomodoro Timer / Break
+  // To Handle the pomodoro Timer / Break / Refetching data
 
   useEffect(() => {
     let intervalId: number | null = null;
@@ -125,13 +125,12 @@ function App() {
     let breakTimeoutId: number | null = null;
 
     if (isOnBreak) {
-      getZenQuote();
-
       breakTimeoutId = setTimeout(() => {
         setIsOnBreak(false);
         setIsRunning(true);
         setClock(0);
         setLogBreaks((prevBreaks) => prevBreaks + 5);
+        getZenQuote();
       }, fiveMinutes);
     }
 
@@ -143,65 +142,73 @@ function App() {
   return (
     <main className="container">
       {!isOnBreak ? (
-        <div
-          className={
-            isRunning ? "container-main is-on" : "container-main is-off"
-          }
-        >
-          <div className="container-title">
-            <div>
-              <p className="title-hello">{sayHello()}</p>
-              <p className="title-calendar">
+        <>
+          <div className="container-sidebar">
+            <div className="sidebar-top">
+              <p className="sidebar-title">{sayHello()}</p>
+              <p className="sidebar-day">
                 {" "}
                 {dayOfWeek} {clockDay}
               </p>
             </div>
-            <h1 className="title-clock">
-              {clock} {clock > 1 ? "minutes" : "minute"}
-            </h1>
+
+            <div className="sidebar-session">
+              <h2 className="session-title">Session</h2>
+              <div className="session-block">
+                <p className="session-subtitle">Duration</p>
+                <p>
+                  {sessionHours > 0
+                    ? `${sessionHours}h${sessionMinutes}m`
+                    : `${sessionMinutes}m`}
+                </p>
+              </div>
+              <div className="session-block">
+                <p className="session-subtitle">Breaks</p>
+                <p>
+                  {" "}
+                  {breakHours > 0
+                    ? `${breakHours}h${breakMinutes}m`
+                    : `${breakMinutes}m`}
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="container-button">
-            <button
-              onClick={handleReset}
-              type="button"
-              className="btn button-reset"
-            >
-              <TimerReset size={20} />
-            </button>
-            <button
-              onClick={handleStart}
-              type="button"
-              disabled={isRunning}
-              className="btn button-start"
-            >
-              <Play size={20} />
-            </button>
-            <button
-              onClick={handleStop}
-              type="button"
-              className="btn button-stop"
-            >
-              <Pause size={20} />
-            </button>
+
+          <div className="container-main">
+            <div className="container-title">
+              <div className="container-timer">
+                <h1 className="timer-title">
+                  {clock} {clock > 1 ? "minutes" : "minute"}
+                </h1>
+                <p className="timer-subtitle">FOCUS</p>
+              </div>
+            </div>
+            <div className="container-button">
+              <button
+                onClick={handleReset}
+                type="button"
+                className="btn button-reset"
+              >
+                <TimerReset size={20} />
+              </button>
+              <button
+                onClick={handleStart}
+                type="button"
+                disabled={isRunning}
+                className="btn button-start"
+              >
+                <Play size={20} />
+              </button>
+              <button
+                onClick={handleStop}
+                type="button"
+                className="btn button-stop"
+              >
+                <Pause size={20} />
+              </button>
+            </div>
           </div>
-          {isOnBreak && <p>Vous êtes en pause pour 5 minutes</p>}
-          <div className="container-session">
-            <h2 className="session-title">Session</h2>
-            <p>Duration</p>
-            <p>
-              {sessionHours > 0
-                ? `${sessionHours}h${sessionMinutes}m`
-                : `${sessionMinutes}m`}
-            </p>
-            <p>Breaks</p>
-            <p>
-              {" "}
-              {breakHours > 0
-                ? `${breakHours}h${breakMinutes}m`
-                : `${breakMinutes}m`}
-            </p>
-          </div>
-        </div>
+        </>
       ) : (
         <div>
           <Coffee size={30} />
